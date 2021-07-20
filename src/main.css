@@ -1,0 +1,17 @@
+.container{
+  text-align: center;
+  margin: 10px;
+}
+
+.title{
+  margin: 10px;
+}
+
+.title__title{
+  border-style: solid;
+}
+
+.api__container{
+  border-style: solid;
+  border-color: blue;
+}
