@@ -1,0 +1,22 @@
+{
+  "counties":[
+    {"county":"avon-and-somerset", "lat":"51.4575", "long":"-2.360000"},
+    {"county":"bedfordshire", "lat":"", "long":""},
+    {"county":"cambridgeshire", "lat":"", "long":""},
+    {"county":"cheshire", "lat":"", "long":""},
+    {"county":"city-of-london", "lat":"", "long":""},
+    {"county":"cleveland", "lat":"", "long":""},
+    {"county":"cumbria", "lat":"", "long":""},
+    {"county":"derbyshire", "lat":"", "long":""},
+    {"county":"devon-and-cornwall", "lat":"", "long":""},
+    {"county":"dorset", "lat":"", "long":""},
+    {"county":"durham", "lat":"", "long":""},
+    {"county":"Avon", "lat":"", "long":""},
+    {"county":"Avon", "lat":"", "long":""},
+    {"county":"Avon", "lat":"", "long":""},
+    {"county":"Avon", "lat":"", "long":""},
+    {"county":"Avon", "lat":"", "long":""},
+    {"county":"Avon", "lat":"", "long":""},
+
+  ]
+}

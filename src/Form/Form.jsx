@@ -8,17 +8,18 @@ class Form extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      value: '',
+      area: '',
       isSearched: false
     }
-    this.handleChange = this.handleChange.bind(this);
+    this.areaChange = this.areaChange.bind(this);
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleChange(event){
+  areaChange(event){
     this.setState({
-      value: event.target.value
+      area: event.target.value
     });
   }
 
@@ -44,10 +45,12 @@ class Form extends React.Component{
       return(
         <div className="form__container">
           <form onSubmit={this.handleSubmit} className="form__obj">
-            <label>
-              Area:
-              <input type="text" value={this.state.value} onChange={this.handleChange}/>
-            </label>
+            <div className="form__input">
+            <label>City/County/Country:</label>
+            <br></br>
+              <input type="text" value={this.state.area} onChange={this.areaChange}/>
+            </div>
+            <br></br>
             <input type="submit" value="Submit" onClick={this.handleClick}/>
           </form>
         </div>
@@ -56,7 +59,7 @@ class Form extends React.Component{
     else if(isSearched)
     {
       return(
-          <Data searchedArea={this.state.value}/>
+          <Data area={this.state.area}/>
       );
     }
   }
