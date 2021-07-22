@@ -250,7 +250,7 @@ class Data extends React.Component{
               <tbody>
                 <tr>
                   {crimes.map(crime=>(
-                    <td id={crime.url}><ClickableArea crimeType={crime.name} id={crime.url} lat={area.lat} long={area.long}/></td>
+                    <td className="data__table__data" id={crime.url}><ClickableArea crimeType={crime.name} id={crime.url} lat={area.lat} long={area.long}/></td>
                   ))}
                 </tr>
               </tbody>
