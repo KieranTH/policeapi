@@ -107,7 +107,7 @@ class ClickableArea extends React.Component{
     if(!isClicked)
     {
       return(
-        <p className="clickable__text" onClick={this.handleClick}>
+        <p className="clickable__title" onClick={this.handleClick}>
         {this.props.crimeType}
         </p>
       );
@@ -115,20 +115,34 @@ class ClickableArea extends React.Component{
     else if(isClicked)
     {
       const BarSeries = VerticalBarSeries;
-      const blueData = [{x: 'A', y: 12}, {x: 'B', y: 2}, {x: 'C', y: 11}];
       var elem = document.getElementById(this.props.id);
       elem.style.width = "100px";
 
-      let d = new Date();
-      d.setMonth(d.getMonth()-1);
-      let month = d.toLocaleString('default', {month: 'long'});
-      if(this.state.resultsOne.length !=0)
+
+      //--- getting dates for each query as objects ---
+      let dOne = new Date();
+      dOne.setMonth(dOne.getMonth()-1);
+      let monthOne = dOne.toLocaleString('default', {month: 'long'});
+
+      let dTwo = new Date();
+      dTwo.setMonth(dTwo.getMonth()-2);
+      let monthTwo = dTwo.toLocaleString('default', {month: 'long'});
+
+      let dThree = new Date();
+      dThree.setMonth(dThree.getMonth()-3);
+      let monthThree = dThree.toLocaleString('default', {month: 'long'});
+      //console.log(this.state.resultsOne.length, this.state.resultsTwo.length);
+
+      const blueData = [{x: monthOne, y: this.state.resultsOne.length}, {x: monthTwo, y: this.state.resultsTwo.length}, {x: monthThree, y: this.state.resultsThree.length}];
+
+
+      if(this.state.resultsOne.length !=0 && this.state.resultsTwo.length != 0 && this.state.resultsThree.length != 0)
       {
         return(
           <div className="clickable__container">
-            <p onClick={this.handleClick}>Viewing Data from {month} and 2 previous months!</p>
+            <p className="clickable__title" onClick={this.handleClick}>Viewing Data from {monthOne} and 2 previous months!</p>
             <br></br>
-            <p>Number of cases: {this.state.resultsOne.length}</p>
+            <p className="text">Overall number of cases over 3 month period: {this.state.resultsThree.length + this.state.resultsTwo.length + this.state.resultsThree.length}</p>
             <XYPlot xType="ordinal" width={300} height={300} xDistance={100}>
             <VerticalGridLines />
             <HorizontalGridLines />

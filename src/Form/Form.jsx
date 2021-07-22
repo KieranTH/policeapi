@@ -2,14 +2,21 @@ import React from 'react'
 
 import Data from '../Data/Data'
 
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
+
+
 import './Form.css';
+
+import {fetchAreas} from '../APIController/APIController.js'
 
 class Form extends React.Component{
   constructor(props){
     super(props)
     this.state = {
       area: '',
-      isSearched: false
+      isSearched: false,
+      items: []
     }
     this.areaChange = this.areaChange.bind(this);
 
@@ -36,6 +43,13 @@ class Form extends React.Component{
     });
   }
 
+  componentDidMount(){
+    fetchAreas((data=>{
+      this.setState({
+      items: data});
+    }));
+
+  }
 
 
   render(){
@@ -44,22 +58,32 @@ class Form extends React.Component{
     {
       return(
         <div className="form__container">
-          <form onSubmit={this.handleSubmit} className="form__obj">
+          <form autocomplete="off" onSubmit={this.handleSubmit} className="form__obj">
             <div className="form__input">
-            <label>City/County/Country:</label>
             <br></br>
-              <input type="text" value={this.state.area} onChange={this.areaChange}/>
+              <Autocomplete
+                id="areaText"
+                options={this.state.items}
+                getOptionLabel={(option => option.name)}
+                style={{width:300}}
+                onChange={(event, newVal)=>{
+                  this.state.area = newVal;
+                }}
+                className="input"
+                renderInput={(params)=> <TextField {...params} label="Area" variant="outlined" />}
+              />
             </div>
             <br></br>
-            <input type="submit" value="Submit" onClick={this.handleClick}/>
+            <input className="button" type="submit" value="Submit" onClick={this.handleClick}/>
           </form>
         </div>
       );
     }
     else if(isSearched)
     {
+      console.log(this.state.area.name);
       return(
-          <Data area={this.state.area}/>
+          <Data area={this.state.area.id} areas={this.state.items}/>
       );
     }
   }

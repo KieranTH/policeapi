@@ -6,3 +6,17 @@
   position: relative;
   top:40%;
 }
+
+.clickable__title{
+  font-size: 1rem
+}
+
+.clickable__title:hover{
+  color: blue;
+  cursor: pointer;
+  text-shadow: 5px 2px 8px #00000080;
+}
+
+.text{
+  font-size: 0.8rem;
+}

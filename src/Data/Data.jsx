@@ -20,7 +20,7 @@ class Data extends React.Component{
       error: null,
       isLoaded: false,
       returnSearch: false,
-      items: [],
+      items: this.props.areas,
       filteredArea: [],
       queryType: "forces",
       coordinates: [],
@@ -46,10 +46,10 @@ class Data extends React.Component{
       console.log(res[0].location.lat);
     })*/
 
-    fetchAreas((data=>{
+    /*fetchAreas((data=>{
       this.setState({
       items: data});
-    }));
+    }));*/
 
     fetchCrimeCategories((data =>{
       this.setState({
@@ -58,10 +58,14 @@ class Data extends React.Component{
       console.log(this.state.crimeCategories);
     }));
 
-    if(this.state.items.length===0)
+    /*if(this.state.items.length)
     {
       this.timerID = setInterval(() => this.filterAreas(), 2000);
-    }
+    }*/
+
+    this.filterAreas();
+
+
     //this.timerID = setInterval(() => this.tick(), 1000);
 
     //this.timerID = setInterval(() => this.tick(), 1000);
@@ -89,7 +93,7 @@ class Data extends React.Component{
   }
 
   filterAreas(){
-    console.log(this.state.items);
+    console.log("test",this.state.items);
 
     var items = this.state.items;
 
@@ -120,6 +124,8 @@ class Data extends React.Component{
         }
       }
     }
+
+    console.log(areas);
 
     //--- setting filtered areas ---
     this.setState({
@@ -237,7 +243,7 @@ class Data extends React.Component{
       return(
         <div className="data__container">
           <div className="data__div">
-          <h1>Search: {this.props.searchedArea}</h1>
+          <h1>Results: </h1>
             {areas.map(area=>(
               <table className="data__table">
               <thead>
