@@ -8,3 +8,18 @@
   border-style: dashed;
 
 }
+
+
+.data__table{
+  border: 1px solid black;
+  width: 80%;
+}
+
+.data__table td{
+  overflow: hidden;
+  padding: 10px;
+}
+
+.data__table td:nth-of-type(1){
+  width: 40px;
+}

@@ -1,0 +1,8 @@
+.clickable__text{
+  float:left
+}
+
+.clickable__container{
+  position: relative;
+  top:40%;
+}

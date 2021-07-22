@@ -5,7 +5,7 @@ import ClickableArea from '../ClickableArea/ClickableArea';
 
 import './Data.css';
 
-import {runFetch, getCoords} from '../APIController/APIController.js'
+import {fetchAreas, getCoords, fetchCrimeCategories, fetchCrimes} from '../APIController/APIController.js'
 
 //var geocoder = require('google-geocoder');
 
@@ -23,7 +23,9 @@ class Data extends React.Component{
       items: [],
       filteredArea: [],
       queryType: "forces",
-      coordinates: []
+      coordinates: [],
+      crimeCategories: [],
+      crimesPerArea: []
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -44,9 +46,16 @@ class Data extends React.Component{
       console.log(res[0].location.lat);
     })*/
 
-    runFetch(this.state.queryType, (data=>{
+    fetchAreas((data=>{
       this.setState({
       items: data});
+    }));
+
+    fetchCrimeCategories((data =>{
+      this.setState({
+        crimeCategories: data
+      })
+      console.log(this.state.crimeCategories);
     }));
 
     if(this.state.items.length===0)
@@ -129,6 +138,17 @@ class Data extends React.Component{
     //--- stop timer ---
     clearInterval(this.timerID);
 
+    /*//--- get crimes from lat and long ---
+    if(!this.state.isLoaded)
+    {
+        console.log("test");
+      setTimeout(function(){
+        this.getCrimesPerArea();
+      }.bind(this),5000);
+    }
+    else {
+      this.getCrimesPerArea();
+    }*/
 
   }
 
@@ -152,6 +172,7 @@ class Data extends React.Component{
         console.log("retrieved data: ", this.state.coordinates);
       }));
 
+      //--- waiting for fetch and adding lat and long to area array ---
       setTimeout(function(){
         console.log(i);
         for(var j = 0; j<i;j++)
@@ -170,6 +191,30 @@ class Data extends React.Component{
     //clearInterval(this.timerID3);
   }
 
+  /*getCrimesPerArea(){
+    var areas = this.state.filteredArea;
+
+    console.log("crimes: ",areas);
+    console.log(areas[0].lat);
+    for(var i = 0;i<areas.length;i++)
+    {
+      fetchCrimes(areas[i].lat, areas[i].long, (data =>{
+          this.state.crimesPerArea.push(data);
+          console.log("crimes per area: ", this.state.crimesPerArea);
+      }))
+    }
+
+    this.completedFetching()
+  }
+
+  completedFetching(){
+    this.setState({
+      isLoaded: true
+    });
+  }*/
+
+
+
 
   render(){
     const {error, isLoaded, items, returnSearch} = this.state;
@@ -187,20 +232,31 @@ class Data extends React.Component{
     else if(!returnSearch){
 
       var areas = this.state.filteredArea;
+      var crimes = this.state.crimeCategories;
 
       return(
         <div className="data__container">
           <div className="data__div">
           <h1>Search: {this.props.searchedArea}</h1>
-            <ul>
-              {areas.map(area => (
-                <li key={area.id}>
-                {area.name}
-                <ClickableArea/>
-                </li>
-              ))}
-            </ul>
-          </div>
+            {areas.map(area=>(
+              <table className="data__table">
+              <thead>
+                <tr className="header__row">
+                  <th>
+                  {area.name}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {crimes.map(crime=>(
+                    <td id={crime.url}><ClickableArea crimeType={crime.name} id={crime.url} lat={area.lat} long={area.long}/></td>
+                  ))}
+                </tr>
+              </tbody>
+              </table>
+            ))}
+            </div>
           <div className="backbutton">
             <button onClick={this.handleClick}>Return / re-input </button>
           </div>

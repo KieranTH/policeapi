@@ -1,31 +1,9 @@
 import Geocode from 'react-geocode';
       //--- Could be structured as Class to reduce re-init of requestArray[] ---
-      export const runFetch = function(request,cb){
-        var force = "durham";
-        var lat = "0";
-        var long = "0";
+      export const fetchAreas = function(cb){
 
-        var requestArray = [
-          "https://data.police.uk/api/forces",
-          "https://data.police.uk/api/forces/"+force,
-          "https://data.police.uk/api/crimes-street/all-crime?lat="+lat+"&lng="+long,
-        ];
-
-        var apiUrl = "";
+        var apiUrl = "https://data.police.uk/api/forces";
         //console.log(request);
-        var r;
-        switch(request)
-        {
-          case "forces":
-            apiUrl = requestArray[0];
-            break;
-          case "specificForce":
-            apiUrl = requestArray[1]
-            break;
-          case "allCrime":
-            apiUrl = requestArray[2];
-            break;
-        }
         console.log(apiUrl);
         fetch(apiUrl)
           .then((response) =>{
@@ -56,4 +34,29 @@ import Geocode from 'react-geocode';
           .then((data) =>{
             cb(data);
           });
+      }
+
+      export const fetchCrimeCategories = function(cb){
+        var apiUrl = "https://data.police.uk/api/crime-categories";
+
+        fetch(apiUrl)
+          .then((response) =>{
+            return response.json();
+          })
+          .then((data =>{
+            cb(data)
+          }));
+      }
+
+      export const fetchCrimes = function(lat,long,type,date,cb){
+        console.log("given coords: ", lat, long);
+        var apiUrl = "https://data.police.uk/api/crimes-street/"+type+"?lat="+lat+"&lng="+long+"&date="+date;
+
+        fetch(apiUrl)
+          .then((response)=>{
+            return response.json();
+          })
+          .then((data=>{
+            cb(data)
+          }));
       }
