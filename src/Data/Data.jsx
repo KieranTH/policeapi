@@ -7,11 +7,12 @@ import './Data.css';
 
 import {fetchAreas, getCoords, fetchCrimeCategories, fetchCrimes} from '../APIController/APIController.js'
 
-//var geocoder = require('google-geocoder');
-
 import Geocode from 'react-geocode';
 
-
+/*
+*  name: Data Component
+*  use: Create Data elements and display Forces and Categories
+*/
 class Data extends React.Component{
   constructor(props)
   {
@@ -31,70 +32,33 @@ class Data extends React.Component{
     this.handleClick = this.handleClick.bind(this);
   }
 
+  //--- switch from Data component to Form listener ---
   handleClick(event){
       this.setState({
         returnSearch: true
       })
   }
 
+  //--- render method complete ---
   componentDidMount(){
-    /*var geo = geocoder({
-      key: "AIzaSyD91S88Y9ikYoY-LVX2mwhic6h_-bFJXvw"
-    })
 
-    geo.find(this.props.searchedArea + "England", function(err,res){
-      console.log(res[0].location.lat);
-    })*/
-
-    /*fetchAreas((data=>{
-      this.setState({
-      items: data});
-    }));*/
-
+    //--- getting crime categories from APIController ---
     fetchCrimeCategories((data =>{
       this.setState({
         crimeCategories: data
       })
-      console.log(this.state.crimeCategories);
+      //console.log(this.state.crimeCategories);
     }));
-
-    /*if(this.state.items.length)
-    {
-      this.timerID = setInterval(() => this.filterAreas(), 2000);
-    }*/
 
     this.filterAreas();
 
-
-    //this.timerID = setInterval(() => this.tick(), 1000);
-
-    //this.timerID = setInterval(() => this.tick(), 1000);
-
-    //google-api key: AIzaSyBpYCo621EaMVylQP_phTYvQGK3OkqTGjY
-    /*fetch("https://data.police.uk/api/forces")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          console.log(result);
-          this.setState({
-            isLoaded: true,
-            items: result
-          });
-        },
-        (error) =>{
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )*/
-
-
   }
 
-  filterAreas(){
-    console.log("test",this.state.items);
 
+  //--- filtering forces based on input from user ---
+  filterAreas(){
+
+    //--- VARS for filtering ---
     var items = this.state.items;
 
     var areas = [];
@@ -103,9 +67,14 @@ class Data extends React.Component{
 
     var test = Object.keys(items);
 
+
+    //--- iterating through each force and checking if equal to user query ---
     for(var i = 0; i<items.length;i++)
     {
+      //--- adding lat and long to items array retrieved from API ---
       items[i] = {... items[i], lat: "lat", long: "long"};
+
+      //--- getting JSON keys ---
       Object.keys(items[i]).forEach(function(key)
       {
         if(keys.indexOf(key) == -1)
@@ -119,21 +88,19 @@ class Data extends React.Component{
       {
         if(this.props.area.length != 0)
         {
+          //--- adding filtered area to areas array ---
           areas.push(items[i]);
           //console.log(areas[i]);
         }
       }
     }
 
-    console.log(areas);
+    //console.log(areas);
 
     //--- setting filtered areas ---
     this.setState({
       filteredArea: areas
     });
-
-    //console.log("Areas set!: ", areas);
-
 
     //--- if items have not been fetched yet ---
     if(this.state.coordinates.length===0)
@@ -143,18 +110,6 @@ class Data extends React.Component{
 
     //--- stop timer ---
     clearInterval(this.timerID);
-
-    /*//--- get crimes from lat and long ---
-    if(!this.state.isLoaded)
-    {
-        console.log("test");
-      setTimeout(function(){
-        this.getCrimesPerArea();
-      }.bind(this),5000);
-    }
-    else {
-      this.getCrimesPerArea();
-    }*/
 
   }
 
@@ -170,64 +125,41 @@ class Data extends React.Component{
     {
       //--- getting coords and setting as state ---
       getCoords(areas[i].name, (data =>{
-        /*this.setState({
-          tempLat: data
-        });*/
         //--- adding new coords to array ---
         this.state.coordinates.push(data);
-        console.log("retrieved data: ", this.state.coordinates);
+        //console.log("retrieved data: ", this.state.coordinates);
       }));
 
       //--- waiting for fetch and adding lat and long to area array ---
       setTimeout(function(){
-        console.log(i);
+        //console.log(i);
         for(var j = 0; j<i;j++)
         {
           areas[j].lat = this.state.coordinates[j][0];
           areas[j].long = this.state.coordinates[j][1];
           console.log(areas);
         }
+        //--- laoding page ---
         this.setState({
           isLoaded: true
         });
       }.bind(this),2000, areas, i);
     }
 
+    //--- clear timer ---
     clearInterval(this.timerID2);
-    //clearInterval(this.timerID3);
   }
-
-  /*getCrimesPerArea(){
-    var areas = this.state.filteredArea;
-
-    console.log("crimes: ",areas);
-    console.log(areas[0].lat);
-    for(var i = 0;i<areas.length;i++)
-    {
-      fetchCrimes(areas[i].lat, areas[i].long, (data =>{
-          this.state.crimesPerArea.push(data);
-          console.log("crimes per area: ", this.state.crimesPerArea);
-      }))
-    }
-
-    this.completedFetching()
-  }
-
-  completedFetching(){
-    this.setState({
-      isLoaded: true
-    });
-  }*/
-
-
-
 
   render(){
     const {error, isLoaded, items, returnSearch} = this.state;
+
+    //--- if error during fetch ---
     if(error)
     {
       return <div>Error: {error.message}</div>
-    } else if (!isLoaded){
+    }
+    //--- if the data is loading ---
+    else if (!isLoaded){
       return (
         <div className="loading__container">
         <div>Loading...</div>
@@ -235,11 +167,13 @@ class Data extends React.Component{
         </div>
       );
     }
+    //--- if data has loaded ---
     else if(!returnSearch){
 
       var areas = this.state.filteredArea;
       var crimes = this.state.crimeCategories;
 
+      //--- returning table of Categories and Forces with ClickableArea component for each category ---
       return(
         <div className="data__container">
           <div className="data__div">
@@ -269,6 +203,7 @@ class Data extends React.Component{
         </div>
       );
     }
+    //--- return back to form ---
     else if(returnSearch)
     {
       return(

@@ -1,64 +1,86 @@
 import Geocode from 'react-geocode';
 
-require('dotenv').config()
-      //--- Could be structured as Class to reduce re-init of requestArray[] ---
-      export const fetchAreas = function(cb){
+require('dotenv').config();
 
-        var apiUrl = "https://data.police.uk/api/forces";
-        //console.log(request);
-        console.log(apiUrl);
-        fetch(apiUrl)
-          .then((response) =>{
-              return response.json();
-          })
-          .then((data) =>{
-            cb(data);
-          });
+/*
+*  name: fetchAreas function
+*  use: Fetch Forces from API - referred to as Areas
+*/
+export const fetchAreas = function(cb){
+
+  var apiUrl = "https://data.police.uk/api/forces";
+  console.log(apiUrl);
+  //--- fetching data and issuing callback function to pass data to parent ---
+  fetch(apiUrl)
+    .then((response) =>{
+        return response.json();
+    })
+    .then((data) =>{
+      cb(data);
+    });
+}
+
+
+/*
+*  name: getCoords function
+*  use: get coordinates for supplied area through Google API
+*/
+export const getCoords = function(area,cb){
+
+  //--- setting Google Geocoder ---
+  Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
+  Geocode.setLanguage("en");
+  Geocode.setRegion("uk");
+
+  //--- getting coordinates ---
+  Geocode.fromAddress(area)
+    .then(
+      (response) => {
+        var coords = [response.results[0].geometry.location.lat,response.results[0].geometry.location.lng];
+        return coords;
+      },
+      (error) =>{
+        console.error(error);
       }
+    )
+    .then((data) =>{
+      cb(data);
+    });
+}
 
-      export const getCoords = function(area,cb){
-        Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
-        Geocode.setLanguage("en");
-        Geocode.setRegion("uk");
 
-        Geocode.fromAddress(area)
-          .then(
-            (response) => {
-              //console.log(response.results[0].geometry.location);
-              var coords = [response.results[0].geometry.location.lat,response.results[0].geometry.location.lng];
-              //console.log("coords: ",coords);
-              return coords;
-            },
-            (error) =>{
-              console.error(error);
-            }
-          )
-          .then((data) =>{
-            cb(data);
-          });
-      }
+/*
+*  name: fetchCrimeCategories function
+*  use: Fetch crime categories from Police API
+*/
+export const fetchCrimeCategories = function(cb){
+  var apiUrl = "https://data.police.uk/api/crime-categories";
 
-      export const fetchCrimeCategories = function(cb){
-        var apiUrl = "https://data.police.uk/api/crime-categories";
+  //--- fetch data from API ---
+  fetch(apiUrl)
+    .then((response) =>{
+      return response.json();
+    })
+    .then((data =>{
+      cb(data)
+    }));
+}
 
-        fetch(apiUrl)
-          .then((response) =>{
-            return response.json();
-          })
-          .then((data =>{
-            cb(data)
-          }));
-      }
 
-      export const fetchCrimes = function(lat,long,type,date,cb){
-        console.log("given coords: ", lat, long);
-        var apiUrl = "https://data.police.uk/api/crimes-street/"+type+"?lat="+lat+"&lng="+long+"&date="+date;
+/*
+*  name: fetchCrimes function
+*  use: Fetching crimes based on category, lat, long and date
+*/
+export const fetchCrimes = function(lat,long,type,date,cb){
+  console.log("given coords: ", lat, long);
+  var apiUrl = "https://data.police.uk/api/crimes-street/"+type+"?lat="+lat+"&lng="+long+"&date="+date;
 
-        fetch(apiUrl)
-          .then((response)=>{
-            return response.json();
-          })
-          .then((data=>{
-            cb(data)
-          }));
-      }
+  //--- fetching data ---
+  fetch(apiUrl)
+    .then((response)=>{
+      return response.json();
+    })
+    .then((data=>{
+      cb(data)
+    }));
+}

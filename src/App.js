@@ -5,6 +5,8 @@ import './main.css';
 import Data from './Data/Data';
 import Form from './Form/Form';
 
+
+//--- main function supplied by React ---
 function App() {
   return (
     <main className="container">

@@ -10,6 +10,11 @@ import './Form.css';
 
 import {fetchAreas} from '../APIController/APIController.js'
 
+
+/*
+*  name: Form Component
+*  use: Create form element and take input from user
+*/
 class Form extends React.Component{
   constructor(props){
     super(props)
@@ -24,18 +29,22 @@ class Form extends React.Component{
     this.handleClick = this.handleClick.bind(this);
   }
 
+  //--- if text area needs updating with default text box---
   areaChange(event){
     this.setState({
       area: event.target.value
     });
   }
 
+  //--- handle submit function | not used with Autocmplete Textbox---
   handleSubmit(event)
   {
     alert("Area searched!: " + this.state.value);
     event.preventDefault();
   }
 
+
+  //--- call function from button click ---
   handleClick(event)
   {
     this.setState({
@@ -43,7 +52,10 @@ class Form extends React.Component{
     });
   }
 
+
+  //--- react element has been rendered ---
   componentDidMount(){
+    //--- getting json array of all Police API forces ---
     fetchAreas((data=>{
       this.setState({
       items: data});
@@ -54,6 +66,7 @@ class Form extends React.Component{
 
   render(){
     const {isSearched} = this.state;
+    //--- form for input ---
     if(!isSearched)
     {
       return(
@@ -81,7 +94,8 @@ class Form extends React.Component{
     }
     else if(isSearched)
     {
-      console.log(this.state.area.name);
+      //--- Show Data after search ---
+      //console.log(this.state.area.name);
       return(
           <Data area={this.state.area.id} areas={this.state.items}/>
       );
