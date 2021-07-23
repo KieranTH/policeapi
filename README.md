@@ -87,7 +87,8 @@ To install all needed packages and libaries.
 <br/>
 
 **Add Google API Key**
-Create ```.env``` file in root folder with variable ```REACT_APP_GOOGLE_API = 'yourapikey'```
+<br/>Create ```.env``` file in root folder with variable ```REACT_APP_GOOGLE_API = 'yourapikey'```
+<br/>
 
 **Launch Node**
 ```sh
