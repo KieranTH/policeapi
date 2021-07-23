@@ -142,7 +142,7 @@ class ClickableArea extends React.Component{
           <div className="clickable__container">
             <p className="clickable__title" onClick={this.handleClick}>Viewing Data from {monthOne} and 2 previous months!</p>
             <br></br>
-            <p className="text">Overall number of cases over 3 month period: {this.state.resultsThree.length + this.state.resultsTwo.length + this.state.resultsThree.length}</p>
+            <p className="text">Overall number of cases over 3 month period: <strong>{this.state.resultsThree.length + this.state.resultsTwo.length + this.state.resultsThree.length}</strong></p>
             <XYPlot xType="ordinal" width={300} height={300} xDistance={100}>
             <VerticalGridLines />
             <HorizontalGridLines />

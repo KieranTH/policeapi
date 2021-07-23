@@ -1,4 +1,6 @@
 import Geocode from 'react-geocode';
+
+require('dotenv').config()
       //--- Could be structured as Class to reduce re-init of requestArray[] ---
       export const fetchAreas = function(cb){
 
@@ -15,7 +17,7 @@ import Geocode from 'react-geocode';
       }
 
       export const getCoords = function(area,cb){
-        Geocode.setApiKey("AIzaSyD91S88Y9ikYoY-LVX2mwhic6h_-bFJXvw");
+        Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
         Geocode.setLanguage("en");
         Geocode.setRegion("uk");
 
